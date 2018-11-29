@@ -123,11 +123,13 @@ CREATE TABLE m_urbanisme_reg.geo_urba_patver
   cat_patver character varying(2) NOT NULL DEFAULT '00' ::bpchar,
   situation character varying(254),
   description character varying(254),
-  parcelle character varying(254),
-  plu character varying(254),
-  zppaup character varying(254),
+  parcelle character varying(80),
+  plu character varying(80),
+  zppaup character varying(80),
   photo1_url character varying(254),
   photo2_url character varying(254),
+  insee character varying(5) NOT NULL,
+  commune character varying(150) NOT NULL,
   src_geom character varying(2) NOT NULL DEFAULT '00' ::bpchar,
   src_date character varying(4) NOT NULL DEFAULT '0000' ::bpchar,
   prec character varying(5) NOT NULL,
@@ -149,7 +151,7 @@ GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE m_urbanisme_reg.geo_urba_patver TO
 GRANT ALL ON TABLE m_urbanisme_reg.geo_urba_patver TO create_sig;
 
 COMMENT ON TABLE m_urbanisme_reg.geo_urba_patver
-  IS 'Donnée géographique décrivant un patrimoine vernaculaire';
+  IS 'Patrimoine vernaculaire';
 COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.id_patver IS 'Identifiant unique du patrimoine vernaculaire';
 COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.cat_patver IS 'Catégorie de patrimoine vernaculaire';
 COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.situation IS 'Adresse ou information permettant de situer le patrimoine vernaculaire';
@@ -158,7 +160,9 @@ COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.parcelle IS 'Référence(s) de
 COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.plu IS 'Zonage au PLU';
 COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.zppaup IS 'Classement à la ZPPAUP';
 COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.photo1_url IS 'Lien photo 1 du patrimoine vernaculaire';                                                                                                 
-COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.photo2_url IS 'Lien photo 2 du patrimoine vernaculaire';     
+COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.photo2_url IS 'Lien photo 2 du patrimoine vernaculaire';
+COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.insee IS 'Code INSEE';
+COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.commune IS 'Commune';
 COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.src_geom IS 'Référentiel de saisie';
 COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.src_date IS 'Année du millésime du référentiel de saisie';
 COMMENT ON COLUMN m_urbanisme_reg.geo_urba_patver.prec IS 'Précision cartographique exprimée en cm';
