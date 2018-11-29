@@ -91,7 +91,7 @@ INSERT INTO m_urbanisme_reg.lt_patri_cat_patver(
     ('00','Non renseigné'),
     ('01','Borne'),
     ('02','Chasse-roue'),
-    ('03','Décoration de faþade'),
+    ('03','Décoration de façade'),
     ('04','Mur'),
     ('05','Plaque'),    
     ('99','Autre');
@@ -235,4 +235,52 @@ ALTER TABLE m_urbanisme_reg.geo_patri_verna
 ALTER TABLE m_urbanisme_reg.geo_patri_verna
   ADD CONSTRAINT lt_pei_src_geom_fkey FOREIGN KEY (src_geom)
       REFERENCES r_objet.lt_src_geom (code) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION;    
+      ON UPDATE NO ACTION ON DELETE NO ACTION;
+      
+      
+
+-- ####################################################################################################################################################
+-- ###                                                                                                                                              ###
+-- ###                                                                        VUES                                                                  ###
+-- ###                                                                                                                                              ###
+-- ####################################################################################################################################################
+
+
+-- View: x_opendata.xopendata_geo_v_patri_verna
+
+-- DROP VIEW x_opendata.xopendata_geo_v_patri_verna;
+
+CREATE OR REPLACE VIEW x_opendata.xopendata_geo_v_patri_verna AS 
+ SELECT g.id_patver,
+    g.ref_doc,
+    c.valeur as cat_patver,
+    g.situation,
+    g.descriptif,
+    g.parcelle,
+    g.plu,
+    g.zppaup,
+    g.urlfic,
+    g.urlphoto1,
+    g.urlphoto2,
+    g.insee,
+    g.commune,
+    o.valeur as src_geom,
+    g.src_date,
+    g.prec,
+    g.ope_sai,
+    g.date_sai,
+    g.date_maj,
+    g.geom
+   FROM m_urbanisme_reg.geo_patri_verna g
+     LEFT JOIN m_urbanisme_reg.lt_patri_cat_patver c ON c.code::text = g.cat_patver::text
+     LEFT JOIN r_objet.lt_src_geom o ON o.code::text = g.src_geom::text
+  ORDER BY g.ref_doc;
+
+ALTER TABLE x_opendata.xopendata_geo_v_patri_verna
+  OWNER TO sig_create;
+GRANT SELECT ON TABLE x_opendata.xopendata_geo_v_patri_verna TO read_sig;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE x_opendata.xopendata_geo_v_patri_verna TO edit_sig;
+GRANT ALL ON TABLE x_opendata.xopendata_geo_v_patri_verna TO create_sig;
+COMMENT ON VIEW x_opendata.xopendata_geo_v_patri_verna
+  IS 'Vue du patrimoine vernaculaire destinée aux échanges de données décodés en opendata';
+          
